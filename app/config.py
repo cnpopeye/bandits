@@ -1,0 +1,8 @@
+
+# Mongodb settings:
+MONGO_HOST = '10.8.8.7'
+MONGO_PORT = 27017
+MONGO_DBNAME = 'banist'
+MONGO_USERNAME = ''
+MONGO_PASSWORD = ''
+

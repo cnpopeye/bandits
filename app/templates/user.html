@@ -1,0 +1,92 @@
+ {% extends "base.html" %}
+ 
+ {%block title%} 
+   Confirm
+ {%endblock title%}
+
+{% block main_body %}  
+
+    {% if session['user'] != user.get('name')%}
+       <table border="0">
+        <tbody>
+         <tr>
+          <td valign="top">user:</td>
+          <td><a href="/user/{{user.get('name')}}">{{user.get('name')}}</a></td>
+         </tr> 
+         <tr>
+          <td valign="top">created:</td>
+          <td>{{user.get("created_at")}}前</td>
+         </tr> 
+         <tr>
+          <td valign="top">贡献:</td>
+          <td> {{user.get("karma")}} </td>
+         </tr> 
+         <tr>
+          <td valign="top">about:</td>
+          <td> {{user.get('bio')}}</td>
+         </tr>
+         <tr>
+          <td></td>
+          <td><a href="/submitted/{{user.get('name')}}"><u>submissions</u></a></td>
+         </tr>
+         <tr>
+          <td></td>
+          <td><a href="/comments/{{user.get('name')}}"><u>comments</u></a></td>
+         </tr>
+        </tbody>
+       </table> <br /><br>
+
+    {%else%}
+
+
+       <form class="profileform" method="post" action="/xuser">
+        <input type="hidden" name="name" value="{{user.get('name')}}" />
+        <input type="hidden" name="user_id" value="{{user.get('user_id')}}" />
+        <input type="hidden" name="hmac" value="8a00f0a4bd4082c2d7f6d346e9af6be6c3bd1533" /> 
+        <table border="0">
+         <tbody>
+          <tr>
+           <td valign="top">user:</td>
+           <td><a href="/user/{{user.get('name')}}"><font color="#3c963c">{{user.get('name')}}</font></a></td>
+          </tr> 
+          <tr>
+           <td valign="top">created:</td>
+           <td>{{user.get('created_at')}}前</td>
+          </tr> 
+          <tr>
+           <td valign="top">karma:</td>
+           <td> {{user.get('karma')}} </td>
+          </tr> 
+          <tr>
+           <td valign="top">about:</td>
+           <td> <textarea cols="60" rows="5" wrap="virtual" name="bio">{{user.get('bio')}}</textarea> <font size="-2"><a href="formatdoc" tabindex="-1"><font color="#afafaf">help</font></a></font> </td>
+          </tr> 
+          <tr>
+           <td valign="top">email:</td>
+           <td><input type="text" name="uemail" value="{{user.get('email')}}" size="60" /></td>
+          </tr>
+           <td></td>
+           <td><a href="/changepw"><u>change password</u></a></td>
+          </tr> 
+          <tr>
+           <td></td>
+           <td><a href="/saved/{{user.get('name')}}"><u>saved stories</u></a></td>
+          </tr> 
+          <tr>
+           <td></td>
+           <td><a href="/submitted/{{user.get('name')}}"><u>submissions</u></a></td>
+          </tr>
+          <tr>
+           <td></td>
+           <td><a href="/comments/{{user.get('name')}}"><u>comments</u></a></td>
+          </tr>
+         </tbody>
+        </table> 
+        <br />
+        <input type="submit" value="update" />
+       </form> <br /><br />
+
+  {%endif%}
+
+{% endblock main_body %}
+

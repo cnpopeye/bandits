@@ -1,0 +1,42 @@
+ {% extends "base.html" %}
+ 
+ {%block title%} 
+   Confirm
+ {%endblock title%}
+
+{% block main_body %}  
+
+       <table border="0"> 
+        <tbody>
+         <tr class="athing"> 
+          <td align="right" valign="top" class="title"><span class="rank"></span></td> 
+          <td valign="top" class="votelinks">
+           <center>
+            <font color="#ff6600">*</font>
+            <br /> 
+            <img src="../static/s.gif" height="1" width="14" />
+           </center></td>
+          <td class="title"><span class="deadmark"></span><a href="/ban/{{ban.get('ban_id')}}">{{ban.get('title')}}</a></td>
+         </tr>
+         <tr>
+          <td colspan="2"></td>
+          <td class="subtext"> <span class="score" id="score_10630618">1 point</span> by <a href="/user/{{ban.get('author')}}"><font color="#3c963c">{{ban.get('author')}}</font></a> <a href="/ban/{{ban.get('ban_id')}}">{{ban.get('created_at')}}前</a> | <a href="/edit/{{ban.get('ban_id')}}">edit</a> | <a href="/delete-confirm/{{ban.get('author')}}">delete</a> </td>
+         </tr> 
+         <tr style="height:20px"></tr>
+         <tr>
+          <td colspan="2"></td>
+          <td>
+           <form method="post" action="/xdelete">
+            <input type="hidden" name="ban_id" value="{{ban.get('ban_id')}}" />
+            <input type="hidden" name="goto" value="{{goto}}" />
+            <input type="hidden" name="hmac" value="aa8da5e2459d4cefb7ba43eaf49e94b2e3c23a47" /> Do you want this to be deleted? 
+            <br />
+            <br />
+            <input type="submit" name="d" value="Yes" />&nbsp; 
+            <input type="submit" name="d" value="No" />
+           </form></td>
+         </tr>
+        </tbody>
+       </table> 
+
+{% endblock main_body %}

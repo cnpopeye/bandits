@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block main_body %}     
+     <!-- 记录开始-->
+{% for ban in bans%}
+     <tr>
+      <td>
+       <table border="0" cellpadding="0" cellspacing="0" class="itemlist"> 
+        <tbody>
+         <tr class="athing"> 
+          <td align="right" valign="top" class="title"><span class="rank">1.</span></td> 
+          <td valign="top" class="votelinks">
+           <center>
+            <a id="up_10617681" href="vote?for=10617681&amp;dir=up&amp;goto=news">
+             <div class="votearrow" title="upvote"></div></a>
+           </center></td>
+          <td class="title">
+          <span class="deadmark"></span>
+            <a href="ban/{{ ban.get('ban_id')}}">
+          {{ ban.get('title')}}
+          </a>
+
+          {% if ban.get('url')%}
+            <span class="sitebit comhead">(<a href="{{ ban.get('url')}}">
+            <span class="sitestr">{{ban.get("site")}}</span></a>)
+            </span>
+          {%endif%}
+          </td>
+         </tr>
+         <tr>
+          <td colspan="2"></td>
+          <td class="subtext pocket-inserted"> <span class="score" id="score_10617681">117 points</span> by <a href="/user/{{ ban.get('author')}}">{{ ban.get('author')}}</a> <a href="ban/{{ ban.get('ban_id')}}">{{ ban.get('created_at')}}前</a> | <a href="ban/{{ ban.get('ban_id')}}">{{ ban.get('comments')}} comments</a> 
+
+          {% if session['user'] == ban.get('author')%}
+           | <a href="/edit/{{ ban.get('ban_id')}}">edit</a>
+           | <a href="/delete-confirm/{{ ban.get('ban_id')}}?goto=newest">delete</a>
+          {% endif %}
+
+          </td>
+         </tr> 
+         <tr class="spacer" style="height:5px"></tr> 
+        </tbody>
+       </table></td>
+     </tr> 
+{% endfor %}
+    <!-- 记录结束-->
+{% endblock main_body %}
+
+ 

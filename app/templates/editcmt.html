@@ -1,0 +1,47 @@
+ {% extends "base.html" %}
+ 
+ {%block title%} 
+   Edit
+ {%endblock title%}
+
+{% block main_body %}  
+       <table border="0"> 
+        <tbody>
+         <tr class="athing">
+          <td class="ind"></td>
+          <td valign="top" class="votelinks">
+           <center>
+            <font color="#ff6600">*</font>
+            <br /> 
+            <img src="../static/s.gif" height="1" width="14" />
+           </center></td>
+          <td class="default">
+           <div style="margin-top:2px; margin-bottom:-10px;">
+            <span class="comhead"> <span class="score" id="score_10631714">1 point</span> by <a href="/user/{{comment.get('author')}}"><font color="#3c963c">{{comment.get('author')}}</font></a> <a href="/ban/{{comment.get('ban_id')}}">{{comment.get("created_at")}} 前<span class="par"> |
+
+          {% if session['user'] == comment.get('author')%}
+            | <a href="/editcmt/{{comment.get('comment_id')}}">edit</a> 
+            | <a href="/deletecmt-confirm/{{comment.get('comment_id')}}?goto=editcmt">delete</a>
+          {% endif %}
+          </a> 
+            <span class="deadmark"></span> <span class="storyon"></span> </span>
+           </div><br /><span class="comment"> <span class="c00">{{comment.get('comment')}}<span> </span>
+             <div class="reply"></div></span></span></td>
+         </tr> 
+        </tbody>
+       </table><br />
+       <form class="itemform" method="post" action="/xeditcmt">
+        <input type="hidden" name="comment_id" value="{{comment.get('comment_id')}}" />
+        <input type="hidden" name="hmac" value="36b74e5a2587c57e0a9a87bb506293cfb8704c58" />
+        <table border="0"> 
+         <tbody>
+          <tr>
+           <td valign="top">text:</td>
+           <td><textarea cols="60" rows="5" wrap="virtual" name="text">{{comment.get('comment')}}</textarea> <font size="-2"><a href="formatdoc" tabindex="-1"><font color="#afafaf">help</font></a></font></td>
+          </tr> 
+         </tbody>
+        </table>
+        <br />
+        <input type="submit" value="update" />
+       </form> 
+{% endblock main_body %}       

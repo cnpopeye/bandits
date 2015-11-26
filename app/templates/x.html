@@ -1,0 +1,56 @@
+<html op="x">
+ <head>
+  <meta name="referrer" content="origin" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="../static/news.css" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <script type="text/javascript">
+function hide(id) {
+  var el = document.getElementById(id);
+  if (el) { el.style.visibility = 'hidden'; }
+}
+
+function vote(node) {
+  var v = node.id.split(/_/);
+  var item = v[1];
+  hide('up_'   + item);
+  hide('down_' + item);
+  var ping = new Image();
+  ping.src = node.href;
+  return false;
+} </script>
+  <title>Message | Hacker News</title>
+ </head>
+ <body>
+  <center>
+   <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
+    <tbody>
+     <tr>
+      <td bgcolor="#ff6600">
+       <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
+        <tbody>
+         <tr>
+          <td style="width:18px;padding-right:4px"><a href="http://www.ycombinator.com"><img src="../static/y18.gif" width="18" height="18" style="border:1px #ffffff solid;" /></a></td>
+          <td style="line-height:12pt; height:10px;"><span class="pagetop"><b>Message</b></span></td>
+         </tr>
+        </tbody>
+       </table></td>
+     </tr>
+     <tr style="height:10px"></tr>
+     <tr>
+      <td><span class="admin">
+        <center>
+         <table width="500">
+          <tbody>
+           <tr>
+            <td>Password recovery message sent. If you don't see it, you might want to check your spam folder.</td>
+           </tr>
+          </tbody>
+         </table>
+        </center></span><br /><br /> </td>
+     </tr>
+    </tbody>
+   </table>
+  </center>
+ </body>
+</html>

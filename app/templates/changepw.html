@@ -1,0 +1,31 @@
+
+ {% extends "base.html" %}
+ 
+ {%block title%} 
+   Change Password
+ {%endblock title%}
+
+{% block main_body %}  
+<br /><br /> 
+{{error}}
+       <form method="post" action="/c">
+        <input type="hidden" name="fnid" value="{{user_id}}" />
+        <input type="hidden" name="fnop" value="changepw-page" />
+        <table border="0">
+         <tbody>
+          <tr>
+           <td>Current Password:</td>
+           <td><input type="password" name="oldpw" size="20" /></td>
+          </tr>
+          <tr>
+           <td>New Password:</td>
+           <td><input type="password" name="pw" size="20" /></td>
+          </tr>
+          <tr>
+           <td></td>
+           <td><input type="submit" value="Change" /></td>
+          </tr>
+         </tbody>
+        </table>
+       </form>
+{% endblock main_body %}

@@ -1,0 +1,47 @@
+ {% extends "base.html" %}
+ 
+ {%block title%} 
+   Delete
+ {%endblock title%}
+
+{% block main_body %}  
+
+       <table border="0"> 
+        <tbody>
+         <tr class="athing">
+          <td class="ind"></td>
+          <td valign="top" class="votelinks">
+           <center>
+            <font color="#ff6600">*</font>
+            <br /> 
+            <img src="../static/s.gif" height="1" width="14" />
+           </center></td>
+          <td class="default">
+           <div style="margin-top:2px; margin-bottom:-10px;">
+            <span class="comhead"> <span class="score" id="score_10631714">1 point</span> by <a href="/user/{{comment.get('author')}}"><font color="#3c963c">{{comment.get('author')}}</font></a> <a href="/ban/{{comment.get('ban_id')}}">{{comment.get('created_at')}}前</a> 
+            <span class="par"> | 
+
+             <a href="/editcmt/{{comment.get('comment_id')}}">edit</a> | <a href="/deletecmt-confirm/{{comment.get('comment_id')}}">delete</a><span class="deadmark"></span> <span class="storyon"></span> </span>
+           </div><br /><span class="comment"> <span class="c00">{{comment.get("comment")}}<span> </span>
+             <div class="reply"></div></span></span></td>
+         </tr> 
+         <tr style="height:20px"></tr>
+         <tr>
+          <td colspan="2"></td>
+          <td>
+           <form method="post" action="/xdeletecmt">
+            <input type="hidden" name="comment_id" value="{{comment.get('comment_id')}}" />
+            <input type="hidden" name="ban_id" value="{{comment.get('ban_id')}}" />
+            <input type="hidden" name="goto" value="{{goto}}" />
+            <input type="hidden" name="hmac" value="e78f7ec05572febac5c48792131a0ee68042e525" /> Do you want this to be deleted? 
+            <br />
+            <br />
+            <input type="submit" name="d" value="Yes" />&nbsp; 
+            <input type="submit" name="d" value="No" />
+           </form></td>
+         </tr>
+        </tbody>
+       </table> 
+
+
+{% endblock main_body %}
