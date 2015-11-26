@@ -11,6 +11,7 @@ from flask import Flask, request, render_template, redirect, url_for,session
 from flask.ext.pymongo import PyMongo
 from auth import auth
 
+PAGE_ITEM = 50
 psl = PublicSuffixList()
 
 mongo = PyMongo()
@@ -83,15 +84,21 @@ def r():
     else:
         return u'遇到错误请返回重新提交:'+error
         
+@app.route("/newest/<page>", methods=['GET'])
+def newest(page=1):
+    bans = get_bans(page)
+    return render_template('list.html', bans=bans, page=int(page)+1)    
+
+        
 @app.route("/newest", methods=['GET'])
-def newest():
-    bans = get_bans()
-    print bans
-    return render_template('list.html', bans=bans)    
+def n(page=1):
+    bans = get_bans(page)
+    return redirect(url_for('newest', page=1))   
+
 
 @app.route("/", methods=['GET'])
 def hello():
-    return redirect(url_for('newest'))
+    return redirect(url_for('newest', page=page))
 
 @app.route("/ban/<ban_id>", methods=['GET'])
 def ban(ban_id):
@@ -412,9 +419,13 @@ def gen_ban_comments(comments):
         cmts.append( _gen_comment(c) )
     return cmts
 
-def get_bans():
+def get_bans(page):
     "get ban list"
-    res = mongo.db.ban.find()
+    res = mongo.db.ban.find({},
+        sort=([("created_at",-1)]),
+        skip=int(page)*PAGE_ITEM if int(page) > 1 else 0,
+        limit=PAGE_ITEM
+        )
     bans = []
     for r in res:
         bans.append(

@@ -8,10 +8,10 @@
        <table border="0" cellpadding="0" cellspacing="0" class="itemlist"> 
         <tbody>
          <tr class="athing"> 
-          <td align="right" valign="top" class="title"><span class="rank">1.</span></td> 
+          <td align="right" valign="top" class="title"><span class="rank"> - </span></td> 
           <td valign="top" class="votelinks">
            <center>
-            <a id="up_10617681" href="vote?for=10617681&amp;dir=up&amp;goto=news">
+            <a id="up_10617681" href="#">
              <div class="votearrow" title="upvote"></div></a>
            </center></td>
           <td class="title">
@@ -29,7 +29,7 @@
          </tr>
          <tr>
           <td colspan="2"></td>
-          <td class="subtext pocket-inserted"> <span class="score" id="score_10617681">117 points</span> by <a href="/user/{{ ban.get('author')}}">{{ ban.get('author')}}</a> <a href="ban/{{ ban.get('ban_id')}}">{{ ban.get('created_at')}}前</a> | <a href="ban/{{ ban.get('ban_id')}}">{{ ban.get('comments')}} comments</a> 
+          <td class="subtext pocket-inserted"> <span class="score" id="score_10617681">x points</span> by <a href="/user/{{ ban.get('author')}}">{{ ban.get('author')}}</a> <a href="ban/{{ ban.get('ban_id')}}">{{ ban.get('created_at')}}前</a> | <a href="ban/{{ ban.get('ban_id')}}">{{ ban.get('comments')}} comments</a> 
 
           {% if session['user'] == ban.get('author')%}
            | <a href="/edit/{{ ban.get('ban_id')}}">edit</a>
@@ -39,6 +39,8 @@
           </td>
          </tr> 
          <tr class="spacer" style="height:5px"></tr> 
+         <tr class="morespace" style="height:10px"></tr>
+         <tr><td colspan="2"></td><td class="title"><a href="/newest/{{page}}" rel="nofollow">More</a></td></tr>
         </tbody>
        </table></td>
      </tr> 
