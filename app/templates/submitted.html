@@ -40,7 +40,7 @@
 
           {% if session['user'] == ban.get('author')%}
            | <a href="/edit/{{ ban.get('ban_id')}}">edit</a>
-           | <a href="/delete-confirm/{{ ban.get('ban_id')}}?goto=newest">delete</a>
+           | <a href="/delete-confirm/{{ ban.get('ban_id')}}?goto=submitted">delete</a>
           {% endif %}
 
           </td>
@@ -49,7 +49,7 @@
 
          <tr class="spacer" style="height:5px"></tr> 
          <tr class="morespace" style="height:10px"></tr>
-         <tr><td colspan="2"></td><td class="title"><a href="/newest/{{page}}" rel="nofollow">More</a></td></tr>
+         <tr><td colspan="2"></td><td class="title"><a href="/submitted/{{name}}/{{page}}" rel="nofollow">More</a></td></tr>
 
         </tbody>
        </table>

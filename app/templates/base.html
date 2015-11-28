@@ -21,7 +21,7 @@
   </script>
 
   <title>
-  {%block title%} {%endblock title%} Hacker News</title>
+  {%block title%} {%endblock title%} 黑单</title>
   {% block extstyle %}{% endblock extstyle %}
 
  </head>
@@ -36,13 +36,15 @@
        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
         <tbody>
          <tr>
-          <td style="width:18px;padding-right:4px"><a href="http://www.ycombinator.com"><img src="../static/y18.gif" width="18" height="18" style="border:1px #ffffff solid;" /></a></td> 
-          <td style="line-height:12pt; height:10px;"><span class="pagetop"><b class="brandname"><a href="/news">黑单</a></b> <a href="/newest">最新</a> |  <a href="/submit">提交</a> </span></td>
+          <td style="width:18px;padding-right:4px"><a href="http://www.ycombinator.com">
+
+          <img src={{ url_for("static", filename="y18.gif") }} width="18" height="18" style="border:1px #ffffff solid;" /></a></td> 
+          <td style="line-height:12pt; height:10px;"><span class="pagetop"><b class="brandname"><a href="/newest">黑单</a></b> <a href="/newest">最新</a> |  <a href="/submit">提交</a> </span></td>
           <td style="text-align:right;padding-right:4px;"><span class="pagetop"> 
           {% if session['user']%}
             <a href="/user/{{session['user']}}">{{session["user"]}}</a> | <a href="/logout">退出</a> 
           {%else%}
-            <a href="login">登录</a> 
+            <a href="/login">登录</a> 
           {% endif %}
           </span></td> 
          </tr>
@@ -62,7 +64,7 @@
 
      <tr>
       <td>
-      <img src="../static/s.gif" height="10" width="0" />
+      <img src={{ url_for("static", filename="s.gif") }}  height="10" width="0" />
        <table width="100%" cellspacing="0" cellpadding="1">
         <tbody>
          <tr>
@@ -71,7 +73,7 @@
         </tbody>
        </table><br />
        <center>
-        <span class="yclinks"><a href="newsguidelines.html">Guidelines</a> | <a href="newsfaq.html">FAQ</a> | <a href="mailto:hn@ycombinator.com">Support</a> | <a href="security.html">Security</a> | <a href="lists">Lists</a> | <a href="bookmarklet.html">Bookmarklet</a>  | <a href="mailto:hn@ycombinator.com">Contact</a></span>
+        <span class="yclinks"><a href="/welcome">初衷</a> | <a href="/guidelines">使用</a> | <a href="/faq">FAQ</a> | <a href="mailto:hn@banist.com">支持</a> | <a href="/security">贡献</a> | <a href="mailto:hn@banist.com">联系</a></span>
         <br />
         <br />
         <form method="get" action="//hn.algolia.com/">

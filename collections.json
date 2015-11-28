@@ -10,7 +10,8 @@
 	"author":"email address or None",
 	"valid":"t/f/n",   
 	"valid_at":ISODate(),
-	"comments":0
+	"comments":0,
+	"upvote":["name1", "name2"]
 }
 
 // comments
@@ -26,6 +27,7 @@
 	"user_id":ObjectId(),
 	"name":"",
 	"passwd":"sdfasfd",
+	"saved":[ObjectId()], // ban_id list
 	"created_at":ISODate()
 }
 

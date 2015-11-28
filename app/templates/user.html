@@ -1,7 +1,7 @@
  {% extends "base.html" %}
  
  {%block title%} 
-   Confirm
+   Confirm 
  {%endblock title%}
 
 {% block main_body %}  
@@ -27,11 +27,11 @@
          </tr>
          <tr>
           <td></td>
-          <td><a href="/submitted/{{user.get('name')}}"><u>submissions</u></a></td>
+          <td><a href="/submitted/{{user.get('name')}}/1"><u>submissions</u></a></td>
          </tr>
          <tr>
           <td></td>
-          <td><a href="/comments/{{user.get('name')}}"><u>comments</u></a></td>
+          <td><a href="/comments/{{user.get('name')}}/1"><u>comments</u></a></td>
          </tr>
         </tbody>
        </table> <br /><br>
@@ -74,11 +74,11 @@
           </tr> 
           <tr>
            <td></td>
-           <td><a href="/submitted/{{user.get('name')}}"><u>submissions</u></a></td>
+           <td><a href="/submitted/{{user.get('name')}}/1"><u>submissions</u></a></td>
           </tr>
           <tr>
            <td></td>
-           <td><a href="/comments/{{user.get('name')}}"><u>comments</u></a></td>
+           <td><a href="/comments/{{user.get('name')}}/1"><u>comments</u></a></td>
           </tr>
          </tbody>
         </table> 

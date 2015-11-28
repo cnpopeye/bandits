@@ -1,0 +1,55 @@
+ {% extends "base.html" %}
+ 
+ {%block title%} 
+   {{name}}'s comments
+ {%endblock title%}
+
+{% block main_body %}  
+       <table border="0"> 
+        <tbody>
+
+   {%for c in comments%}
+    <tr class="athing">
+     <td>
+      <table border="0"> 
+       <tbody>
+        <tr>
+         <td class="ind"><img src={{ url_for("static", filename="s.gif") }}  height="1" width="0" /></td>
+         <td valign="top" class="votelinks">
+          <center>
+          <img src={{ url_for("static", filename="s.gif") }}  height="1" width="14">
+           <!-- <a id="up_10612924" onclick="return vote(this)" href="#">
+            <div class="votearrow" title="upvote"></div></a> -->
+          </center></td>
+         <td class="default">
+          <div style="margin-top:2px; margin-bottom:-10px;">
+           <span class="comhead"> <a href="/user/{{ c.get('author')}}">{{ c.get('author')}}</a> <a href="/ban/{{c.get('ban_id')}}">{{ c.get('created_at')}}前</a> 
+
+          {% if session['user'] == c.get('author')%}
+            | <a href="/editcmt/{{c.get('comment_id')}}">edit</a> 
+            | <a href="/deletecmt-confirm/{{c.get('comment_id')}}?goto=comments">delete</a>
+          {% endif %}
+
+           <span class="par"></span><span class="deadmark"></span> <span class="storyon"></span> </span>
+          </div><br />
+          <span class="comment"> 
+          <span class="c00">
+          {{ c.get('comment')}}
+          <span> </span>
+            </span> </span> </td>
+        </tr> 
+       </tbody>
+      </table>
+      </td>
+    </tr> 
+    {%endfor%}
+  
+
+         <tr class="spacer" style="height:5px"></tr> 
+         <tr class="morespace" style="height:10px"></tr>
+         <tr><td colspan="2"></td><td class="title"><a href="/comments/{{name}}/{{page}}" rel="nofollow">More</a></td></tr>
+
+        </tbody>
+       </table><br />
+
+{% endblock main_body %}       

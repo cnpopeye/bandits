@@ -1,7 +1,7 @@
  {% extends "base.html" %}
  
  {%block title%} 
-   {{ban.get("title", "no title") }} 
+   {{ban.get("title", "no title") }} - 
  {%endblock title%}
 
 {% block main_body %}  
@@ -12,10 +12,15 @@
      <td align="right" valign="top" class="title"><span class="rank"></span></td> 
      <td valign="top" class="votelinks">
       <center>
-       <a id="up_10611035" onclick="return vote(this)" href="/vote/{{ban.get('_id')}}">
-        <div class="votearrow" title="upvote"></div></a>
+       {%if ban.get('voted')%}
+             <img src={{ url_for("static", filename="s.gif") }}  height="1" width="14">
+      {%else%}
+       <a id="up_{{ban.get('ban_id')}}" onclick="return vote(this)" href="/vote/up/{{ban.get('ban_id')}}">
+        <div class="votearrow" title="upvote"></div>
+        </a>
+        {%endif%}
       </center></td>
-     <td class="title"><span class="deadmark"></span><a href="/ban/{{ban.get('ban_id')}}">{{ ban.get("title", "no title") }}</a></td>
+     <td class="title"><span class="deadmark"></span><a href="/ban/{{ban.get('ban_id')}}">{{ ban.get("title") }}</a></td>
     </tr>
     <tr>
      <td colspan="2"></td>
@@ -25,7 +30,7 @@
      <a href="/user/{{ban.get('author')}}">
      <font color="#3c963c">{{ban.get('author')}}</font>
      </a> 
-     <a href="/ban/{{ban.get('ban_id')}}">{{ban.get("created_at")}}前</a> | <a href="ban/{{ban.get('ban_id')}}">{{ban.get('comments')}} 条评论</a>
+     <a href="/ban/{{ban.get('ban_id')}}">{{ban.get("created_at")}}前</a> | <a href="/ban/{{ban.get('ban_id')}}">{{ban.get('comments')}} 条评论</a>
           {% if session['user'] == ban.get('author')%}
            | <a href="/edit/{{ ban.get('ban_id')}}">edit</a>
            | <a href="/delete-confirm/{{ ban.get('ban_id')}}?goto=ban">delete</a>
@@ -42,12 +47,12 @@
      <td colspan="2"></td>
      <td> 
       <form method="post" action="/comment">
-       <input type="hidden" name="ban_id" value="{{ban.get('_id')}}" />
+       <input type="hidden" name="ban_id" value="{{ban.get('ban_id')}}" />
        <input type="hidden" name="hmac" value="da538b80956ed2c42c3972487770c209d825601c" />
        <textarea name="text" rows="6" cols="60"></textarea> 
        <br />
        <br />
-       <span class="subtext">If you haven't already, would you mind reading <a href="newsguidelines.html"><u>site guidelines</u></a>? </span> 
+       <span class="subtext">If you haven't already, would you mind reading <a href="/newsguidelines.html"><u>site guidelines</u></a>? </span> 
        <br />
        <br />
        <input type="submit" value="add comment" />
@@ -61,23 +66,25 @@
 
   <table border="0" class="comment-tree"> 
    <tbody>
+
    {%for c in comments%}
     <tr class="athing">
      <td>
       <table border="0"> 
        <tbody>
         <tr>
-         <td class="ind"><img src="../static/s.gif" height="1" width="0" /></td>
+         <td class="ind"><img src={{ url_for("static", filename="s.gif") }}  height="1" width="0" /></td>
          <td valign="top" class="votelinks">
           <center>
-           <a id="up_10612924" onclick="return vote(this)" href="#">
-            <div class="votearrow" title="upvote"></div></a>
+          <img src={{ url_for("static", filename="s.gif") }}  height="1" width="14">
+           <!-- <a id="up_10612924" onclick="return vote(this)" href="#">
+            <div class="votearrow" title="upvote"></div></a> -->
           </center></td>
          <td class="default">
           <div style="margin-top:2px; margin-bottom:-10px;">
-           <span class="comhead"> <a href="/user/{{ c.get('author')}}">{{ c.get('author')}}</a> <a href="ban/{{ban.get('_id')}}">{{ c.get('created_at')}}前</a> 
+           <span class="comhead"> <a href="/user/{{ c.get('author')}}">{{ c.get('author')}}</a> <a href="/ban/{{ban.get('ban_id')}}">{{ c.get('created_at')}}前</a> 
 
-          {% if session['user'] == ban.get('author')%}
+          {% if session['user'] == c.get('author')%}
             | <a href="/editcmt/{{c.get('comment_id')}}">edit</a> 
             | <a href="/deletecmt-confirm/{{c.get('comment_id')}}?goto=ban">delete</a>
           {% endif %}
@@ -95,6 +102,7 @@
       </td>
     </tr> 
     {%endfor%}
+  
    </tbody>
   </table> 
 

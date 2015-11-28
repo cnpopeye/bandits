@@ -13,11 +13,11 @@
            <center>
             <font color="#ff6600">*</font>
             <br /> 
-            <img src="../static/s.gif" height="1" width="14" />
+            <img src={{ url_for("static", filename="s.gif") }}  height="1" width="14" />
            </center></td>
           <td class="default">
            <div style="margin-top:2px; margin-bottom:-10px;">
-            <span class="comhead"> <span class="score" id="score_10631714">1 point</span> by <a href="/user/{{comment.get('author')}}"><font color="#3c963c">{{comment.get('author')}}</font></a> <a href="/ban/{{comment.get('ban_id')}}">{{comment.get("created_at")}} 前<span class="par"> |
+            <span class="comhead"> <span class="score" id="score_10631714">1 point</span> by <a href="/user/{{comment.get('author')}}"><font color="#3c963c">{{comment.get('author')}}</font></a> <a href="/ban/{{comment.get('ban_id')}}">{{comment.get("created_at")}}前<span class="par">
 
           {% if session['user'] == comment.get('author')%}
             | <a href="/editcmt/{{comment.get('comment_id')}}">edit</a> 

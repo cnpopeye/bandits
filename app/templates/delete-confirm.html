@@ -14,7 +14,7 @@
            <center>
             <font color="#ff6600">*</font>
             <br /> 
-            <img src="../static/s.gif" height="1" width="14" />
+            <img src={{ url_for("static", filename="s.gif") }}  height="1" width="14" />
            </center></td>
           <td class="title"><span class="deadmark"></span><a href="/ban/{{ban.get('ban_id')}}">{{ban.get('title')}}</a></td>
          </tr>

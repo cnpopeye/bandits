@@ -85,20 +85,20 @@ def r():
         return u'遇到错误请返回重新提交:'+error
         
 @app.route("/newest/<page>", methods=['GET'])
-def newest(page=1):
+def more(page=1):
     bans = get_bans(page)
     return render_template('list.html', bans=bans, page=int(page)+1)    
 
         
 @app.route("/newest", methods=['GET'])
-def n(page=1):
+def newest(page=1):
     bans = get_bans(page)
-    return redirect(url_for('newest', page=1))   
+    return redirect(url_for('more', page=1))   
 
 
 @app.route("/", methods=['GET'])
 def hello():
-    return redirect(url_for('newest', page=page))
+    return redirect(url_for('newest', page=1))
 
 @app.route("/ban/<ban_id>", methods=['GET'])
 def ban(ban_id):
@@ -182,7 +182,8 @@ def xdelete():
     else:
         if goto in ["edit", "ban"]:
             __parm = dict(ban_id=ban_id)
-        print goto, __parm
+        if goto in ['submitted', 'comments']:
+            __parm = dict(name=session['user'], page=1)
         return redirect(url_for(goto, **__parm))
 
 
@@ -233,6 +234,7 @@ def xdeletecmt():
     if d == "Yes":
         status = delete_comment(comment_id)
         if status:
+            div_inc_comment_to_ban(ban_id)
             return redirect(url_for('ban', ban_id=ban_id))
         else:   
             return u'发生错误，请返回重试。'
@@ -241,6 +243,8 @@ def xdeletecmt():
             __parm = dict(ban_id=ban_id)
         if goto in ['editcmt']:
             __parm = dict(comment_id=comment_id)
+        if goto in ['submitted', 'comments']:
+            __parm = dict(name=session['user'], page=1)
         return redirect(url_for(goto, **__parm))
 
 @app.route("/user/<name>", methods=['GET'])
@@ -307,6 +311,45 @@ def x():
     #TODO: send mail
     return render_template("x.html" )
 
+@app.route("/vote/<up_down>/<ban_id>", methods=['GET'])
+@auth
+def vote(up_down, ban_id):
+    if up_down == "up":
+        vote_up(ban_id, name)
+    return redirect(url_for("newest", page=1))
+
+@app.route("/comments/<name>/<page>", methods=['GET'])
+@auth
+def comments(name, page=1):
+    comments = get_comments_with_user(name, page)
+    return render_template("comments.html", comments=comments, name=name, page=1)
+
+@app.route("/submitted/<name>/<page>", methods=['GET'])
+@auth
+def submitted(name, page=1):
+    bans = get_bans_with_user(name, page)
+    return render_template('submitted.html', bans=bans, name=name, page=int(page)+1)    
+
+@app.route("/welcome", methods=['GET'])
+def welcome():
+    return render_template("welcome.html")
+
+@app.route("/guidelines", methods=['GET'])
+def newsguidelines():
+    return render_template("guidelines.html")
+
+@app.route("/faq", methods=['GET'])
+def faq():
+    return render_template("faq.html")
+
+@app.route("/security", methods=['GET'])
+def security():
+    return render_template("security.html")
+
+
+def vote_up(ban_id, name):
+    return mongo.db.ban.update({"_id":ObjectId(ban_id)},
+                                {"$addToSet":{"vote":{"$each":[name]}} }, w=1)
 
 def get_user_with_id(user_id):
     u =  mongo.db.user.find_one({"_id":ObjectId(user_id)})
@@ -362,6 +405,11 @@ def add_inc_comment_to_ban(ban_id):
                                 {"$inc":{"comments":1}}, 
                                 w=1)
 
+def div_inc_comment_to_ban(ban_id):
+    return mongo.db.ban.update({"_id":ObjectId(ban_id)}, 
+                                {"$inc":{"comments":-1}}, 
+                                w=1)
+
 def add_ban(ban):
     "add new ban"
     return mongo.db.ban.insert(ban, w=1)
@@ -372,6 +420,20 @@ def update_ban(ban_id, ban):
                             {"_id":ObjectId(ban_id)}, 
                             {"$set":ban}, 
                             w=1)
+
+def get_comments_with_user(name, page):
+    cmts = []
+    comments = mongo.db.comments.find({"author": name},
+        sort=([("created_at",-1)]),
+        skip=int(page)*PAGE_ITEM if int(page) > 1 else 0,
+        limit=PAGE_ITEM
+        )
+    for c in comments:
+        cmts.append( _gen_comment(c) )
+    return cmts
+
+    
+
 def get_comments(ban_id):
     return mongo.db.comments.find({"ban_id": ObjectId(ban_id)})
 
@@ -399,6 +461,12 @@ def update_comment(comment_id, text):
                                 {"$set":{"comment":text}}, 
                                 w=1)
 
+def gen_ban_comments(comments):
+    cmts = []
+    for c in comments:
+        cmts.append( _gen_comment(c) )
+    return cmts
+
 def del_ban(ban_id):
     "delete ban"
     return mongo.db.ban.remove({"_id":ObjectId(ban_id)})
@@ -406,18 +474,8 @@ def del_ban(ban_id):
 def get_ban(ban_id):
     "get ban info"
     r = mongo.db.ban.find_one({"_id":ObjectId(ban_id)})
-    ban = r
-    if r:
-        ban['ban_id'] = str(r.get('_id'))
-        ban['comments'] = r.get('comments',0)
-        ban['created_at'] = gen_by_created_at(r.get("created_at"))
+    ban = _gen_ban(r) if r else {}
     return ban
-
-def gen_ban_comments(comments):
-    cmts = []
-    for c in comments:
-        cmts.append( _gen_comment(c) )
-    return cmts
 
 def get_bans(page):
     "get ban list"
@@ -428,21 +486,39 @@ def get_bans(page):
         )
     bans = []
     for r in res:
-        bans.append(
-            dict(
-                rank=r.get("rank", 1),
-                ban_id=str(r.get("_id")),
-                title=r.get("title","no title"),
-                url=r.get("url",None),
-                text=r.get("text",None),
-                site=r.get("site", "no site"),
-                comments=r.get("comments",0),
-                author=r.get("author", "unknow"),
-                created_at=gen_by_created_at(r.get("created_at")),
-                points=r.get("points", 0)
-                )
-            )
+        bans.append( _gen_ban(r) )            
     return bans    
+
+def get_bans_with_user(name, page):
+    "get ban list"
+    res = mongo.db.ban.find({"author":name},
+        sort=([("created_at",-1)]),
+        skip=int(page)*PAGE_ITEM if int(page) > 1 else 0,
+        limit=PAGE_ITEM
+        )
+    bans = []
+    for r in res:
+        bans.append( _gen_ban(r) )            
+    return bans    
+
+def _gen_ban(b):
+    name = session.get('user')
+    return dict(
+        rank=b.get("rank", 1),
+        ban_id=str(b.get("_id")),
+        title=b.get("title","no title"),
+        url=b.get("url",None),
+        text=b.get("text",None),
+        site=b.get("site", "no site"),
+        comments=b.get("comments",0),
+        author=b.get("author", "unknow"),
+        voted=_voted(b, name),
+        created_at=gen_by_created_at(b.get("created_at")),
+        points=b.get("points", 0)
+        )
+
+def _voted(ban,name):
+    return name in ban.get('vote',[]) or ban['author'] == name
 
 def valid_login(uname, passwd):
     return mongo.db.user.find_one({"name":uname, "passwd":passwd})
