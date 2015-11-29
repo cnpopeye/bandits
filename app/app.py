@@ -6,6 +6,7 @@ import pytz
 from bson import ObjectId
 from datetime import datetime
 from publicsuffixlist import PublicSuffixList
+import md5
 
 from flask import Flask, request, render_template, redirect, url_for,session
 from flask.ext.pymongo import PyMongo
@@ -288,7 +289,7 @@ def c():
     if user['passwd'] != oldpw:
         error = u'原密码错误'
     if error is None:
-        doc = {"passwd":pw}
+        doc = {"passwd":md5.new(passwd).hexdigest()}
         status = update_user(user_id, doc)
         error = status if not status else None
     if error is None:
@@ -521,15 +522,17 @@ def _voted(ban,name):
     return name in ban.get('vote',[]) or ban['author'] == name
 
 def valid_login(uname, passwd):
-    return mongo.db.user.find_one({"name":uname, "passwd":passwd})
+    pw = md5.new(passwd).hexdigest()
+    return mongo.db.user.find_one({"name":uname, "passwd":pw})
 
 def find_user(uname):
     return mongo.db.user.find_one({"name":uname})
 
 def create_user(uname, passwd):
+    pw = md5.new(passwd).hexdigest()
     return mongo.db.user.insert(
                         {  "name":uname, 
-                            "passwd":passwd, 
+                            "passwd":pw, 
                             "created_at": datetime.utcnow()}, 
                         w=1)
 
