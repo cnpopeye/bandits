@@ -5,7 +5,8 @@ import getopt
 import pytz
 from bson import ObjectId
 from datetime import datetime
-from publicsuffixlist import PublicSuffixList
+from tld import get_tld
+
 import md5
 
 from flask import Flask, request, render_template, redirect, url_for,session
@@ -13,8 +14,6 @@ from flask.ext.pymongo import PyMongo
 from auth import auth
 
 PAGE_ITEM = 50
-psl = PublicSuffixList()
-
 mongo = PyMongo()
 
 app = Flask(__name__)
@@ -380,7 +379,10 @@ def _ban_content_valid(req):
     ban={}
     error=None   
     ban["url"] = req.get("url")
-    ban["site"] =  psl.privatesuffix(ban["url"])  # "example.com"
+    try:
+        ban["site"] = get_tld(ban["url"])
+    except Exception,e:
+        ban['site'] = ""
     title = req.get("title")
     text = req.get("text")
     ban["title"] = title.encode("UTF-8") if isinstance(title, unicode) else title            
