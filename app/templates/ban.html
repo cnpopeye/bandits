@@ -21,11 +21,13 @@
         {%endif%}
       </center></td>
      <td class="title"><span class="deadmark"></span>
-     {%if ban.get('url')%}
-       <a href="{{ ban.get('url') }}">{{ ban.get("title") }}</a>
-     {%else%}
        <a href="/ban/{{ban.get('ban_id')}}">{{ ban.get("title") }}</a>
-     {%endif%}
+     {% if ban.get('url')%}
+            <span class="sitebit comhead">(<a href="{{ ban.get('url')}}">
+            <span class="sitestr">{{ban.get("site")}}</span></a>)
+            </span>
+          {%endif%}
+
      </td>
     </tr>
     <tr>
