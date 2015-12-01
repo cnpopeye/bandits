@@ -315,6 +315,7 @@ def x():
 @auth
 def vote(up_down, ban_id):
     if up_down == "up":
+        name=session['user']
         vote_up(ban_id, name)
     return redirect(url_for("newest", page=1))
 
