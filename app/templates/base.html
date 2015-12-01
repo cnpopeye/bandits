@@ -2,7 +2,7 @@
  <head> 
   <meta name="referrer" content="origin" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-  <meta name="baidu-site-verification" content="II28DyWLEb" />
+  <meta name="msvalidate.01" content="B8899BE658724CD03D45E055B44329D6" />
   <link rel="stylesheet" type="text/css" href={{ url_for("static", filename="news.css") }} /> 
   <link rel="shortcut icon" href="/favicon.ico" /> 
   <script type="text/javascript">
@@ -77,10 +77,14 @@
         <span class="yclinks"><a href="/welcome">初衷</a> | <a href="/guidelines">使用</a> | <a href="/faq">FAQ</a> | <a href="mailto:hn@banist.com">支持</a> | <a href="/security">贡献</a> | <a href="mailto:hn@banist.com">联系</a></span>
         <br />
         <br />
-        <form method="get" action="//hn.algolia.com/">
+        
+
+        <form>
          Search: 
-         <input type="text" name="q" value="" size="17" />
+         <input type="text" id="bdcsMain" value="" size="17" />
         </form> 
+
+
        </center>
        </td>
      </tr> 
@@ -90,5 +94,7 @@
     </tbody>
    </table>
   </center> 
+
+
  </body>
 </html>
