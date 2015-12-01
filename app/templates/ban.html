@@ -20,12 +20,18 @@
         </a>
         {%endif%}
       </center></td>
-     <td class="title"><span class="deadmark"></span><a href="/ban/{{ban.get('ban_id')}}">{{ ban.get("title") }}</a></td>
+     <td class="title"><span class="deadmark"></span>
+     {%if ban.get('url')%}
+       <a href="{{ ban.get('url') }}">{{ ban.get("title") }}</a>
+     {%else%}
+       <a href="/ban/{{ban.get('ban_id')}}">{{ ban.get("title") }}</a>
+     {%endif%}
+     </td>
     </tr>
     <tr>
      <td colspan="2"></td>
      <td class="subtext pocket-inserted"> 
-     <span class="score" id="score_10611035">10 points</span> 
+     <span class="score" id="score_10611035">{{{{ban.get("voted")}} }} points</span> 
      by 
      <a href="/user/{{ban.get('author')}}">
      <font color="#3c963c">{{ban.get('author')}}</font>

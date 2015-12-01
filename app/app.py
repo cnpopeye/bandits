@@ -379,7 +379,8 @@ def update_user(user_id, doc):
 def _ban_content_valid(req):
     ban={}
     error=None   
-    ban["url"] = req.get("url")
+    ban["url"] = req.get("url", None) 
+    ban['url']=None if len(ban["url"]) == 0 else ban['url']
     try:
         ban["site"] = get_tld(ban["url"])
     except Exception,e:
