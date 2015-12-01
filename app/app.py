@@ -519,7 +519,7 @@ def _gen_ban(b):
         author=b.get("author", "unknow"),
         voted=_voted(b, name),
         created_at=gen_by_created_at(b.get("created_at")),
-        points=b.get("points", 0)
+        points=len(b.get("vote", []))
         )
 
 def _voted(ban,name):
